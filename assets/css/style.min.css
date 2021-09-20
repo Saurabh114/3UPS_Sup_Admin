@@ -30069,3 +30069,9 @@ code {
 .dp-off {
     background-color: #4c5667!important
 }
+
+@media (max-width:327px) {
+    .skin-default-dark .topbar .top-navbar .navbar-header {
+        display: none;
+    }
+}

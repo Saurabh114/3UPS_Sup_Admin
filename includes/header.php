@@ -90,8 +90,8 @@
                        <!-- ============================================================== -->
                        <!-- End Comment -->
                        <!-- ============================================================== -->
-                       <div class="user-profile">
-                           <div class="user-pro-body d-flex">
+                       <div class="user-profile" style="width: auto;">
+                           <div class="user-pro-body" style="display: flex;">
                                <div class="dropdown">
                                    <a href="javascript:void(0)" class="dropdown-toggle u-dropdown link hide-menu" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Steave Gection <i class="fas fa-chevron-down"></i><span class="caret"></span></a>
                                    <div class="dropdown-menu animated flipInY">

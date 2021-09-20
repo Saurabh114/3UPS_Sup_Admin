@@ -80,51 +80,48 @@
                                 <h4 class="card-title">Add Country</h4>
                                 <form class="needs-validation" novalidate>
                                     <div class="row">
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label class="form-label" for="validationCustom01">Country Name</label>
                                             <input type="text" class="form-control" id="validationCustom01" placeholder="Country Name" value="India (+91)" required>
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
                                         </div>
-                                        <div class="col-md-4 mb-3">
+                                        <div class="col-md-6 mb-3">
                                             <label class="form-label" for="validationCustomUsername">Mobile Country Code</label>
                                             <div class="input-group">
-                                               
                                                 <input type="tel" class="form-control" id="mobile_country_code" placeholder="Mobile Country Code" value="+91" aria-describedby="inputGroupPrepend" required>
                                                 <div class="invalid-feedback">
                                                     Please add Mobile Country Code.
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="validationCustom01">Enter Latitude</label>
+                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Enter Latitude" required>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label" for="validationCustom01">Enter Longitude</label>
+                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Enter Longitude" required>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
                                     </div>
-                                    <button class="btn btn-primary text-white" type="submit">Add</button>
+                                    <div style="text-align: center;">
+                                        <button class="btn btn-primary text-white" type="submit">Add</button>
+                                    </div>
                                 </form>
-                                <script>
-                                    // Example starter JavaScript for disabling form submissions if there are invalid fields
-                                    (function() {
-                                        'use strict';
-                                        window.addEventListener('load', function() {
-                                            // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                                            var forms = document.getElementsByClassName('needs-validation');
-                                            // Loop over them and prevent submission
-                                            var validation = Array.prototype.filter.call(forms, function(form) {
-                                                form.addEventListener('submit', function(event) {
-                                                    if (form.checkValidity() === false) {
-                                                        event.preventDefault();
-                                                        event.stopPropagation();
-                                                    }
-                                                    form.classList.add('was-validated');
-                                                }, false);
-                                            });
-                                        }, false);
-                                    })();
-                                </script>
+
                             </div>
                         </div>
                     </div>
 
                 </div>
+                
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
                 <!-- ============================================================== -->
@@ -148,6 +145,28 @@
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
+
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
