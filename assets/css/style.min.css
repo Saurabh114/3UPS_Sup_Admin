@@ -29743,7 +29743,6 @@ html body .navbar-dark .mailbox .message-center a .mail-contnet .time {
     .container-xl,
     .container-xxl {
         padding: 0 15px 0 15px;
-        overflow: hidden
     }
     .topbar {
         width: 100%
@@ -30068,6 +30067,10 @@ code {
 
 .dp-off {
     background-color: #4c5667!important
+}
+
+.curd_icons {
+    font-size: 18px;
 }
 
 @media (max-width:327px) {
