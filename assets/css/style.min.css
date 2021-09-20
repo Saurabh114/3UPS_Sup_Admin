@@ -1,4 +1,43 @@
 @import url(https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700);
+
+/* width */
+
+ ::-webkit-scrollbar {
+    width: 12px;
+}
+
+ ::-webkit-scrollbar:horizontal {
+    height: 5px;
+    width: 12px;
+}
+
+
+/* Track */
+
+ ::-webkit-scrollbar-track {
+    background: #4c5667;
+}
+
+
+/* Handle */
+
+ ::-webkit-scrollbar-thumb {
+    background: #242931;
+    transition: 0.5s;
+}
+
+
+/* Handle on hover */
+
+ ::-webkit-scrollbar-thumb:hover {
+    background: #353c48;
+    transition: 0.5s;
+}
+
+ ::-webkit-scrollbar-thumb:horizontal {
+    height: 5px;
+}
+
 @font-face {
     font-family: themify;
     src: url(http://eliteadmin.themedesigner.in/demos/bt4/assets/icons/themify-icons/fonts/themify.eot?-fvbane);
@@ -28000,7 +28039,7 @@ table th {
     border-radius: .25rem;
     background: #f05004;
     color: #fff;
-    margin-right: 3px
+    margin: 5px;
 }
 
 .dt-buttons .dt-button:hover {
@@ -30071,6 +30110,10 @@ code {
 
 .curd_icons {
     font-size: 18px;
+}
+
+.active_deactive_icons {
+    font-size: 22px;
 }
 
 @media (max-width:327px) {

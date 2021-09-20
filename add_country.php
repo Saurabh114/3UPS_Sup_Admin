@@ -137,6 +137,7 @@
                                                 <th>Mobile Code</th>
                                                 <th>Latitude</th>
                                                 <th>Longitude</th>
+                                                <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -147,6 +148,7 @@
                                                 <th>Mobile Code</th>
                                                 <th>Latitude</th>
                                                 <th>Longitude</th>
+                                                <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </tfoot>
@@ -157,6 +159,10 @@
                                                 <td>+91</td>
                                                 <td>20.5937° N</td>
                                                 <td>78.9629° E</td>
+                                                <td class="active_deactive_icons">
+                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                </td>
                                                 <td class="curd_icons">
                                                     <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
                                                     <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
@@ -168,6 +174,10 @@
                                                 <td>+1</td>
                                                 <td>37.0902° N</td>
                                                 <td>95.7129° W</td>
+                                                <td class="active_deactive_icons">
+                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                </td>
                                                 <td class="curd_icons">
                                                     <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
                                                     <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
@@ -179,6 +189,10 @@
                                                 <td>+48</td>
                                                 <td>51.9194° N</td>
                                                 <td>19.1451° E</td>
+                                                <td class="active_deactive_icons">
+                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                </td>
                                                 <td class="curd_icons">
                                                     <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
                                                     <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
@@ -190,6 +204,10 @@
                                                 <td>+81</td>
                                                 <td>36.2048° N</td>
                                                 <td>138.2529° E</td>
+                                                <td class="active_deactive_icons">
+                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                </td>
                                                 <td class="curd_icons">
                                                     <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
                                                     <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
@@ -201,6 +219,10 @@
                                                 <td>+86</td>
                                                 <td>35.8617° N</td>
                                                 <td>104.1954° E</td>
+                                                <td class="active_deactive_icons">
+                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                </td>
                                                 <td class="curd_icons">
                                                     <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
                                                     <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
@@ -212,6 +234,10 @@
                                                 <td>+57</td>
                                                 <td>4.5709° N</td>
                                                 <td>74.2973° W</td>
+                                                <td class="active_deactive_icons">
+                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                </td>
                                                 <td class="curd_icons">
                                                     <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
                                                     <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
@@ -223,6 +249,10 @@
                                                 <td>+358</td>
                                                 <td>61.9241° N</td>
                                                 <td>25.7482° E</td>
+                                                <td class="active_deactive_icons">
+                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                </td>
                                                 <td class="curd_icons">
                                                     <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
                                                     <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
@@ -234,6 +264,10 @@
                                                 <td>+354</td>
                                                 <td>64.9631° N</td>
                                                 <td>19.0208° W</td>
+                                                <td class="active_deactive_icons">
+                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                </td>
                                                 <td class="curd_icons">
                                                     <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
                                                     <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
