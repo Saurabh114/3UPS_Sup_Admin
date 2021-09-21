@@ -92,8 +92,8 @@
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label" for="validationCustom01">Add State</label>
-                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Add State" required>
+                                            <label class="form-label" for="validationCustom01">Full Name</label>
+                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Full Name" required>
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
