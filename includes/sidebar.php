@@ -16,9 +16,10 @@
                         <li><a href="add_airport.php">Airport</a></li>
                     </ul>
                 </li>
-                
+
                 <li class="nav-small-cap">3UPS Admin</li>
                 <li> <a class="waves-effect waves-dark" href="add_admin.php" aria-expanded="false"><i class="ti-user"></i><span class="hide-menu">Add Admin</span></a></li>
+                <li> <a class="waves-effect waves-dark" href="add_role.php" aria-expanded="false"><i class="ti-desktop"></i><span class="hide-menu">Add Role</span></a></li>
             </ul>
         </nav>
         <!-- End Sidebar navigation -->

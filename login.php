@@ -36,25 +36,27 @@
         <div class="login-register" style="background-image:url(./assets/images/background/login-register.jpg);">
             <div class="login-box card">
                 <div class="card-body">
-                    <form class="form-horizontal form-material" id="loginform" action="http://eliteadmin.themedesigner.in/demos/bt4/dark/index.html">
+                    <form class="form-horizontal form-material" id="loginform">
                         <h3 class="text-center m-b-20">Sign In</h3>
                         <div class="form-group ">
                             <div class="col-xs-12">
-                                <input class="form-control" type="text" required="" placeholder="Username"> </div>
+                                <input class="form-control" type="text" required="" placeholder="Username" required>
+                            </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <input class="form-control" type="password" required="" placeholder="Password"> </div>
+                                <input id="myPassword" class="form-control" type="password" required="" placeholder="Password" required>
+                            </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="d-flex no-block align-items-center">
                                     <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" id="customCheck1">
-                                        <label class="form-check-label" for="customCheck1">Remember me</label>
+                                        <input type="checkbox" class="form-check-input" id="customCheck1" onclick="myFunction()">
+                                        <label class="form-check-label" for="customCheck1">Show Password</label>
                                     </div>
                                     <div class="ms-auto">
-                                        <a href="javascript:void(0)" id="to-recover" class="text-muted"><i class="fas fa-lock m-r-5"></i> Forgot pwd?</a>
+                                        <a href="javascript:void(0)" id="to-recover" class="text-muted"><i class="fas fa-lock m-r-5"></i> Forgot password?</a>
                                     </div>
                                 </div>
                             </div>
@@ -64,13 +66,8 @@
                                 <button class="btn w-100 btn-lg btn-info btn-rounded text-white" type="submit">Log In</button>
                             </div>
                         </div>
-                        <div class="form-group m-b-0">
-                            <div class="col-sm-12 text-center">
-                                Don't have an account? <a href="pages-register.html" class="text-info m-l-5"><b>Sign Up</b></a>
-                            </div>
-                        </div>
                     </form>
-                    <form class="form-horizontal" id="recoverform" action="http://eliteadmin.themedesigner.in/demos/bt4/dark/index.html">
+                    <form class="form-horizontal" id="recoverform">
                         <div class="form-group ">
                             <div class="col-xs-12">
                                 <h3>Recover Password</h3>
@@ -79,7 +76,8 @@
                         </div>
                         <div class="form-group ">
                             <div class="col-xs-12">
-                                <input class="form-control" type="text" required="" placeholder="Email"> </div>
+                                <input class="form-control" type="text" required="" placeholder="Email">
+                            </div>
                         </div>
                         <div class="form-group text-center m-t-20">
                             <div class="col-xs-12">
@@ -95,6 +93,18 @@
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
+
+    <script>
+        function myFunction() {
+            var x = document.getElementById("myPassword");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->

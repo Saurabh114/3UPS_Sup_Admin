@@ -85,8 +85,10 @@
                                                 <label class="form-label" for="validationCustom01">Select Role</label>
                                                 <select class="form-select" required>
                                                     <option value="" selected disabled>Select Role</option>
-                                                    <option value="India">Marketing</option>
-                                                    <option value="USA">Vendor</option>
+                                                    <option value="Admin">Admin</option>
+                                                    <option value="Merchant">Merchant</option>
+                                                    <option value="User">User</option>
+                                                    <option value="Delivery_boy">Delivery Boy</option>
                                                 </select>
                                                 <div class="invalid-feedback">Please Select The Role</div>
                                             </div>
