@@ -136,7 +136,7 @@
                                             Request for Update
                                         </button>
                                         </p>
-                                        <div class="collapse" id="collapseExample" style="">
+                                        <div class="collapse" id="collapseExample" >
                                             <div class="card card-body">
                                                 <div class="form-group">
                                                     <label class="form-label">Remarks</label>
