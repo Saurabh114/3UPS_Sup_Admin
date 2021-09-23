@@ -1,4 +1,62 @@
-       <!-- Fontawesome -->
+
+<?php 
+// include 'db.php';
+session_start();
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: ./login.php");
+}
+
+$id = $_SESSION['admin_id'];
+$token = $_SESSION['token'];
+$ch = curl_init();
+
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+// $header = array(
+//   'Accept: application/json',
+//   'Content-Type: application/x-www-form-urlencoded',
+//   'Authorization1:'.$token
+// );
+
+// $response=curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+
+//   $data = json_decode($response, true);
+//   print_r($data);
+
+
+
+
+
+  
+// $url = "https://3-upstesting.site/delta_api/index.php/web/Login/get_merchant";
+
+// $curl = curl_init($url);
+// curl_setopt($curl, CURLOPT_URL, $url);
+// curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+// $headers = array(
+//    "Accept: application/json",
+//    "Authorization1:".$token
+// );
+
+// curl_setopt($curl, CURLOPT_HTTPHEADER, $headers); //for debug only!
+// curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+// curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+// $resp = curl_exec($curl);
+// $resp = json_decode($resp);
+// curl_close($curl);
+// // print_r($resp);
+// $merchant_data = array();
+// $merchant_data = $resp->data[0];
+// print_r($merchant_data);
+// print_r($res->data[0]);
+
+// echo "<script>alert($merchant_data->merchant_id)</script>"
+  
+?>
+
+<!-- Fontawesome -->
 
        <script src="https://kit.fontawesome.com/41d6de745e.js" crossorigin="anonymous"></script>
 
@@ -100,7 +158,7 @@
                                     
                                        <div class="dropdown-divider"></div>
                                        <!-- text-->
-                                       <a href="login.php" class="dropdown-item"><i class="fas fa-power-off"></i> Logout</a>
+                                       <a href="./backend/script.php?type=logout" class="dropdown-item"><i class="fas fa-power-off"></i> Logout</a>
                                        <!-- text-->
                                    </div>
                                </div>

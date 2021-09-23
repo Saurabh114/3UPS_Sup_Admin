@@ -17,8 +17,8 @@ if(isset($_POST['type']) == "update"){
   print_r($response);
 }
 
-//else if(isset($_POST['type']) == "status"){
+else if(isset($_POST['type']) == "status"){
 
-//}
+}
   
   ?>
