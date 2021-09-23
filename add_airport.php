@@ -1,6 +1,36 @@
+<?php 
+$ch = curl_init();
+$url = "https://www.hspmsolutions.com/3-ups_api/index.php/web/Fetch_details/Fetch_info/getCity?state_id=8";
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+ if($e = curl_error($ch)){
+     echo $e;
+ }
+ else{
+     $result = json_decode($response); 
+ }
+ $res = array();
+ $res=$result->data;
+/*******************airport fetch all data */
+ $url2 = "https://hspmsolutions.com/3-ups_api/index.php/web/Admin_web/Fetch_info_admin/getAirports";
+curl_setopt($ch, CURLOPT_URL, $url2);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response_ai = curl_exec($ch);
+ if($e = curl_error($ch)){
+     echo $e;
+ }
+ else{
+     $result_ai = json_decode($response_ai); 
+ }
+ $res_ai = array();
+ $res_ai=$result_ai->data;
+
+?>
 <!DOCTYPE html>
 <html lang="en">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -78,25 +108,29 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Add Airport</h4>
-                                <form class="needs-validation" novalidate>
+                                <form class="needs-validation" novalidate id="airportform">
                                     <div class="row">
                                         <div class="col-md-4 mb-3">
                                             <div class="form-group">
-                                                <label class="form-label" for="validationCustom01">Select State</label>
-                                                <select class="form-select" required>
+                                                <label class="form-label" for="validationCustom01">Select City</label>
+                                                <select class="form-select" id="city" required>
                                                     <option value="" selected disabled>Select City</option>
-                                                    <option value="Pune">Pune</option>
-                                                    <option value="XYZ">XYZ</option>
-                                                    <option value="Mumbai">Mumbai</option>
-                                                    <option value="Karad">Karad</option>
-                                                    <option value="Solapur">Solapur</option>
+                                                     <?php 
+                                                for($i=0;$i<count($res);$i++){
+                                                    ?>
+                                                    <option value="<?php echo $res[$i]->city_id ?>"><?php echo $res[$i]->city_name ?></option>
+                                                    <?php   
+                                                 }
+                                                ?>
+
+                                                      
                                                 </select>
                                                 <div class="invalid-feedback">Please Select The State</div>
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label" for="validationCustom01">Airport Name</label>
-                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Airport Name" required>
+                                            <input type="text" class="form-control" id="airport_name" placeholder="Airport Name" required>
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
@@ -113,28 +147,28 @@
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label" for="validationCustom01">Enter Latitude</label>
-                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Enter Latitude" required>
+                                            <input type="text" class="form-control" id="latitude" placeholder="Enter Latitude" required>
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label" for="validationCustom01">Enter Longitude</label>
-                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Enter Longitude" required>
+                                            <input type="text" class="form-control" id="Longitude" placeholder="Enter Longitude" required>
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
                                         </div>
                                         <div class="col-md-4 mb-3">
                                             <label class="form-label" for="validationCustom01">Area Of Airport (KM)</label>
-                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Area Of Airport" required>
+                                            <input type="text" class="form-control" id="airportkm" placeholder="Area Of Airport" required>
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
                                         </div>
                                     </div>
                                     <div style="text-align: center;">
-                                        <button class="btn btn-primary text-white m-auto" type="submit">Add</button>
+                                        <button class="btn btn-primary text-white m-auto" type="button" id="addairport" onclick="addAirport()">Add</button>
                                     </div>
                                 </form>
                                 <script>
@@ -156,6 +190,34 @@
                                             });
                                         }, false);
                                     })();
+                                     /**********************************ajax*******************************************/
+                                     function addAirport(){
+                                       
+                                    var city=$("#city").val();
+                                    var airport_name=$('#airport_name').val();
+                                    var airport_address=$('#airport_address').val();
+                                    var latitude=$('#latitude').val();
+                                    var Longitude=$('#Longitude').val();
+                                    var airportkm=$('#airportkm').val();
+      $.ajax({
+                    url:'airportinsert.php',
+                    method:'POST',
+                    data:{
+                        city:city,
+                        airport_name:airport_name,
+                        airport_address:airport_address,
+                        latitude:latitude,
+                        Longitude:Longitude,
+                        airportkm:airportkm
+                    },
+                   success:function(data){
+                       alert("airport details added");
+                       window.location.href="./add_airport.php"
+                   }
+                });
+           
+        }
+                                    
                                 </script>
                             </div>
                         </div>
@@ -172,6 +234,7 @@
                                 <div class="table-responsive m-t-40">
                                     <table id="example23" class="display nowrap table table-hover table-striped border mt-4" cellspacing="0" width="100%">
                                         <thead>
+                                          
                                             <tr>
                                                 <th>Sr.</th>
                                                 <th>Airport Name</th>
@@ -198,142 +261,45 @@
                                             </tr>
                                         </tfoot>
                                         <tbody>
+                                        <?php
+                                            for($i=1;$i<count($res_ai);$i++)
+                                            {
+                                            ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>Pune International Airport</td>
-                                                <td>Pune</td>
-                                                <td>Lohgaon, Pune</td>
-                                                <td>100 km</td>
-                                                <td>20.5937° N</td>
-                                                <td>78.9629° E</td>
+                                               
+                                                <td><?php echo $i ?></td>
+                                                <td><?php echo $res_ai[$i]->airport_name?></td>
+                                                <td><?php echo $res_ai[$i]->city_name?></td>
+                                                <td><?php echo $res_ai[$i]->airport_address?></td>
+                                                <td><?php echo $res_ai[$i]->airport_km?></td>
+                                                <td><?php echo $res_ai[$i]->airport_latitude?></td>
+                                                <td><?php echo $res_ai[$i]->airport_longitude?></td>
+                                               
                                                 <td class="active_deactive_icons">
+                                                    <?php
+                                                    if($res_ai[$i]->airport_status)
+                                                    {
+                                                    ?>
                                                     <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                    <?php
+                                                    } else{
+                                                    ?>
                                                     <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                    <?php
+                                            }
+                                                    ?>
                                                 </td>
                                                 <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
+                                                <a class="edit" type="button" title="Edit" data-id="<?php echo $res_ai[$i]->airport_id ?>"
+                                                    onclick="$('#dataid').val($(this).data('id')); $('#showmodal').modal('show');" 
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
+                                                  <!-- /  <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a> -->
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Pune International Airport</td>
-                                                <td>Pune</td>
-                                                <td>Lohgaon, Pune</td>
-                                                <td>100 km</td>
-                                                <td>37.0902° N</td>
-                                                <td>95.7129° W</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Pune International Airport</td>
-                                                <td>Pune</td>
-                                                <td>Lohgaon, Pune</td>
-                                                <td>100 km</td>
-                                                <td>51.9194° N</td>
-                                                <td>19.1451° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Pune International Airport</td>
-                                                <td>Pune</td>
-                                                <td>Lohgaon, Pune</td>
-                                                <td>100 km</td>
-                                                <td>36.2048° N</td>
-                                                <td>138.2529° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Pune International Airport</td>
-                                                <td>Pune</td>
-                                                <td>Lohgaon, Pune</td>
-                                                <td>100 km</td>
-                                                <td>35.8617° N</td>
-                                                <td>104.1954° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>Pune International Airport</td>
-                                                <td>Pune</td>
-                                                <td>Lohgaon, Pune</td>
-                                                <td>100 km</td>
-                                                <td>4.5709° N</td>
-                                                <td>74.2973° W</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>7</td>
-                                                <td>Pune International Airport</td>
-                                                <td>Pune</td>
-                                                <td>Lohgaon, Pune</td>
-                                                <td>100 km</td>
-                                                <td>61.9241° N</td>
-                                                <td>25.7482° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>8</td>
-                                                <td>Pune International Airport</td>
-                                                <td>Pune</td>
-                                                <td>Lohgaon, Pune</td>
-                                                <td>100 km</td>
-                                                <td>64.9631° N</td>
-                                                <td>19.0208° W</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
+                                            <?php
+                                            } 
+                                            ?>
+                                           
                                         </tbody>
                                     </table>
                                 </div>
@@ -374,29 +340,30 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel1">Update Country</h4>
+                    <h4 class="modal-title" id="exampleModalLabel1">Update Airport</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                 </div>
                 <div class="modal-body">
-                    <form class="needs-validation" novalidate>
+                    <form class="needs-validation" novalidate id="airportupdate">
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <div class="form-group">
-                                    <label class="form-label" for="validationCustom01">Select State</label>
-                                    <select class="form-select" required>
-                                        <option value="" selected disabled>Select City</option>
-                                        <option value="Pune">Pune</option>
-                                        <option value="XYZ">XYZ</option>
-                                        <option value="Mumbai">Mumbai</option>
-                                        <option value="Karad">Karad</option>
-                                        <option value="Solapur">Solapur</option>
+                                    <label class="form-label" for="validationCustom01">Select City</label>
+                                    <select class="form-select" id="city_name" required>
+                                    <?php 
+                                                for($i=0;$i<count($res);$i++){
+                                                    ?>
+                                                    <option value="<?php echo $res[$i]->city_id ?>"><?php echo $res[$i]->city_name ?></option>
+                                                    <?php   
+                                                 }
+                                                ?>
                                     </select>
                                     <div class="invalid-feedback">Please Select The State</div>
                                 </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="validationCustom01">Airport Name</label>
-                                <input type="text" class="form-control" id="validationCustom01" placeholder="Airport Name" required>
+                                <input type="text" class="form-control" id="airport_name" placeholder="Airport Name" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -413,21 +380,22 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="validationCustom01">Enter Latitude</label>
-                                <input type="text" class="form-control" id="validationCustom01" placeholder="Enter Latitude" required>
+                                <input type="text" class="form-control" id="latitude" placeholder="Enter Latitude" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="validationCustom01">Enter Longitude</label>
-                                <input type="text" class="form-control" id="validationCustom01" placeholder="Enter Longitude" required>
+                                <input type="text" class="form-control" id="longitude" placeholder="Enter Longitude" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="validationCustom01">Area Of Airport (KM)</label>
-                                <input type="text" class="form-control" id="validationCustom01" placeholder="Area Of Airport" required>
+                                <input type="text" class="form-control" id="airportkm" placeholder="Area Of Airport" required>
+                                <input type="hidden" name="dataid" id="dataid" value=""/>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -446,7 +414,6 @@
     <!-- ============================================================== 
                         Edit Modal End
      ============================================================== -->
-
 
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -467,6 +434,60 @@
                 });
             }, false);
         })();
+
+        /*********************/
+                                    
+                                     /****************selector******************/
+                                 $(document).ready(function() {
+$('#city').on('change', function() {
+var city_id = this.value;
+$.ajax({
+url: "./backend/states-by-city.php",
+type: "POST",
+data: {
+city_id: city_id
+},
+cache: false,
+success: function(result){
+$("#airport_name").html(result);
+$("#airport_address").html(result);
+ 
+}
+});
+});  
+});
+
+                          $("document").ready(function() {
+                                        $("#airportupdate").submit(function(e) {
+                                            // e.preventDefault();
+                                            var city_name= $("#city_name").val();
+                                            var city = $("#validationCustom01").val();
+                                            var id = $("#dataid").val();
+                                            // console.log(state);
+                                            // console.log(city);
+                                            // console.log(id);
+                                            if(state !='' && city != ''){ 
+                                            $.ajax({
+                                                url: './backend/cityUpdate.php',
+                                                method: 'POST',
+                                                data: {
+                                                    type:"update",
+                                                    state: state,
+                                                    city: city,
+                                                    id: id
+                                                },
+                                                success: function(data) {
+                                                    alert("City updated");
+                                                    // $('#cityTable').html(data);
+                                                }
+                                            });
+                                        }
+                                        else{
+                                            alert("Insert all details")
+                                        }
+                                        });
+                                    });
+
     </script>
 
     <!-- ============================================================== -->
