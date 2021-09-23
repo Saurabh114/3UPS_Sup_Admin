@@ -1,6 +1,23 @@
+<?php
+$ch = curl_init();
+$url = "https://www.hspmsolutions.com/3-ups_api/index.php/web/Admin_web/Fetch_info_admin/getCountry";
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+ if($e = curl_error($ch)){
+     echo $e;
+ }
+ else{
+     $result = json_decode($response); 
+ }
+ $res = array();
+ $res=$result->data;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -78,11 +95,11 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Add Country</h4>
-                                <form class="needs-validation" novalidate>
+                                <form class="needs-validation" novalidate id="countryform" method="POST">
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label" for="validationCustom01">Country Name</label>
-                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Country Name" value="India (+91)" required>
+                                            <input type="text" class="form-control" id="country_name" placeholder="Country Name" name="country_name" required>
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
@@ -90,7 +107,7 @@
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label" for="validationCustomUsername">Mobile Country Code</label>
                                             <div class="input-group">
-                                                <input type="tel" class="form-control" id="mobile_country_code" placeholder="Mobile Country Code" value="+91" aria-describedby="inputGroupPrepend" required>
+                                                <input type="tel" class="form-control" id="mobile_country_code" name="mobile_country_code" placeholder="Mobile Country Code"  aria-describedby="inputGroupPrepend" required>
                                                 <div class="invalid-feedback">
                                                     Please add Mobile Country Code.
                                                 </div>
@@ -98,21 +115,21 @@
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label" for="validationCustom01">Enter Latitude</label>
-                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Enter Latitude" required>
+                                            <input type="text" class="form-control" id="Latitude" placeholder="Enter Latitude" name="latitude" required>
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label" for="validationCustom01">Enter Longitude</label>
-                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Enter Longitude" required>
+                                            <input type="text" class="form-control" id="longitude" placeholder="Enter Longitude" name="longitude" required>
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
                                         </div>
                                     </div>
                                     <div style="text-align: center;">
-                                        <button class="btn btn-primary text-white" type="submit">Add</button>
+                                        <button class="btn btn-primary text-white" type="button" id="addcountry" name="addcountry" onclick="addCountry()">Add</button>
                                     </div>
                                 </form>
 
@@ -121,7 +138,6 @@
                     </div>
 
                 </div>
-
 
                 <div class="row">
                     <div class="col-12">
@@ -148,131 +164,48 @@
                                                 <th>Mobile Code</th>
                                                 <th>Latitude</th>
                                                 <th>Longitude</th>
-                                                <th>Status</th>
+                                                <th>status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
+                                            <?php
+                                            for($i=1;$i<count($res);$i++)
+                                            {
+                                            ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>India</td>
-                                                <td>+91</td>
-                                                <td>20.5937° N</td>
-                                                <td>78.9629° E</td>
+                                                <td><?php echo $i?></td>
+                                                <td><?php echo $res[$i]->country_name ?></td>
+                                                <td><?php echo $res[$i]->mobile_country_code ?></td>
+                                                <td><?php echo $res[$i]->country_lat ?></td>
+                                                <td><?php echo $res[$i]->country_long ?></td>
+                                               
                                                 <td class="active_deactive_icons">
+                                                <?php
+                                                if($res[$i]->country_status){
+                                                    
+                                                
+                                                ?>
                                                     <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                    <?php
+                                                   } else{
+                                                    ?>
                                                     <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                    <?php
+                                                   } 
+                                                    ?>
                                                 </td>
+                                                
                                                 <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
+                                                    <a class="edit" type="button" title="Edit" data-id="<?php echo $res[$i]->country_id ?>"
+                                                    onclick="$('#dataid').val($(this).data('id')); $('#showmodal').modal('show');" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
+                                                   <!-- / <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a> -->
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>USA</td>
-                                                <td>+1</td>
-                                                <td>37.0902° N</td>
-                                                <td>95.7129° W</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Poland</td>
-                                                <td>+48</td>
-                                                <td>51.9194° N</td>
-                                                <td>19.1451° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Japan</td>
-                                                <td>+81</td>
-                                                <td>36.2048° N</td>
-                                                <td>138.2529° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>China</td>
-                                                <td>+86</td>
-                                                <td>35.8617° N</td>
-                                                <td>104.1954° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>Colombia</td>
-                                                <td>+57</td>
-                                                <td>4.5709° N</td>
-                                                <td>74.2973° W</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>7</td>
-                                                <td>Finland</td>
-                                                <td>+358</td>
-                                                <td>61.9241° N</td>
-                                                <td>25.7482° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>8</td>
-                                                <td>Iceland</td>
-                                                <td>+354</td>
-                                                <td>64.9631° N</td>
-                                                <td>19.0208° W</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
+                                            <?php
+                                            }
+                                            ?>
+                                           
                                         </tbody>
                                     </table>
                                 </div>
@@ -317,11 +250,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                <form class="needs-validation" novalidate id="countryUpdate" method="POST">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="validationCustom01">Country Name</label>
-                                <input type="text" class="form-control" id="validationCustom01" placeholder="Country Name" value="India (+91)" required>
+                                <input type="text" class="form-control" id="country_name" placeholder="Country Name" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -329,7 +262,7 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="validationCustomUsername">Mobile Country Code</label>
                                 <div class="input-group">
-                                    <input type="tel" class="form-control" id="mobile_country_code" placeholder="Mobile Country Code" value="+91" aria-describedby="inputGroupPrepend" required>
+                                    <input type="tel" class="form-control" id="mobile_country_code" placeholder="Mobile Country Code" aria-describedby="inputGroupPrepend" required>
                                     <div class="invalid-feedback">
                                         Please add Mobile Country Code.
                                     </div>
@@ -337,14 +270,15 @@
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="validationCustom01">Enter Latitude</label>
-                                <input type="text" class="form-control" id="validationCustom01" placeholder="Enter Latitude" required>
+                                <input type="text" class="form-control" id="country_lat" placeholder="Enter Latitude" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="validationCustom01">Enter Longitude</label>
-                                <input type="text" class="form-control" id="validationCustom01" placeholder="Enter Longitude" required>
+                                <input type="text" class="form-control" id="country_long" placeholder="Enter Longitude" required>
+                                <input type="hidden" name="countrydataid" id="dataid" value=""/>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -354,7 +288,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary text-white">Update</button>
+                    <button type="submit" class="btn btn-primary text-white">Update</button>
                 </div>
             </div>
         </div>
@@ -384,6 +318,58 @@
                 });
             }, false);
         })();
+        /**********************************ajax*******************************************/
+        function addCountry(){
+       
+                var country_name=$("#country_name").val();
+                var mobile_country_code=$("#mobile_country_code").val();
+                var Latitude=$("#Latitude").val();
+                var longitude=$("#longitude").val();
+               
+                $.ajax({
+                    url:'countryinsert.php',
+                    method:'POST',
+                    data:{
+                        country_name:country_name,
+                        mobile_country_code:mobile_country_code,
+                        Latitude:Latitude,
+                        longitude:longitude
+                    },
+                   success:function(data){
+                  alert("country details added");
+                  window.location.href="./add_country.php"
+                   }
+                });
+            }
+            $("document").ready(function() {
+                                        $("#countryUpdate").submit(function(e) {
+                                       
+                var country_name=("#country_name").val();
+                var mobile_country_code=("#mobile_country_code").val();
+                var country_lat=("#country_lat").val();
+                var country_long=("#country_long").val();
+                var id = $("#dataid").val();
+                if(country_name !='' && mobile_country_code != '' && country_lat !='' && country_long !=''){
+                $ajax({
+                    type:'update',
+                    url:'countryUpdate.php',
+                    method:'POST',
+                    data:{
+                       country_name:country_name,
+                       mobile_country_code:mobile_country_code,
+                       country_lat:country_lat,
+                       country_long:country_long
+                    },
+                    success:function(data){
+                        alert("Country Updated")
+                    }
+                });
+            }
+            else{
+                alert("Insert all details")
+            }
+        });
+    });
     </script>
 
     <!-- ============================================================== -->
