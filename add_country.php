@@ -107,7 +107,7 @@ $response = curl_exec($ch);
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label" for="validationCustomUsername">Mobile Country Code</label>
                                             <div class="input-group">
-                                                <input type="tel" class="form-control" id="mobile_country_code" name="mobile_country_code" placeholder="Mobile Country Code"  aria-describedby="inputGroupPrepend" required>
+                                                <input type="tel" class="form-control" id="mobile_country_code" name="mobile_country_code" value="+" placeholder="Mobile Country Code"  aria-describedby="inputGroupPrepend" required>
                                                 <div class="invalid-feedback">
                                                     Please add Mobile Country Code.
                                                 </div>
@@ -119,7 +119,7 @@ $response = curl_exec($ch);
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
-                                        </div>
+                                        </div> 
                                         <div class="col-md-6 mb-3">
                                             <label class="form-label" for="validationCustom01">Enter Longitude</label>
                                             <input type="text" class="form-control" id="longitude" placeholder="Enter Longitude" name="longitude" required>
@@ -327,7 +327,7 @@ $response = curl_exec($ch);
                 var longitude=$("#longitude").val();
                
                 $.ajax({
-                    url:'countryinsert.php',
+                    url:'./backend/countryinsert.php',
                     method:'POST',
                     data:{
                         country_name:country_name,
@@ -336,7 +336,7 @@ $response = curl_exec($ch);
                         longitude:longitude
                     },
                    success:function(data){
-                  alert("country details added");
+                  alert("Country Details Added");
                   window.location.href="./add_country.php"
                    }
                 });
@@ -352,7 +352,7 @@ $response = curl_exec($ch);
                 if(country_name !='' && mobile_country_code != '' && country_lat !='' && country_long !=''){
                 $ajax({
                     type:'update',
-                    url:'countryUpdate.php',
+                    url:'./backend/countryUpdate.php',
                     method:'POST',
                     data:{
                        country_name:country_name,

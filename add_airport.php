@@ -1,36 +1,34 @@
-<?php 
+<?php
 $ch = curl_init();
 $url = "https://www.hspmsolutions.com/3-ups_api/index.php/web/Fetch_details/Fetch_info/getCity?state_id=8";
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
- if($e = curl_error($ch)){
-     echo $e;
- }
- else{
-     $result = json_decode($response); 
- }
- $res = array();
- $res=$result->data;
+if ($e = curl_error($ch)) {
+    echo $e;
+} else {
+    $result = json_decode($response);
+}
+$res = array();
+$res = $result->data;
 /*******************airport fetch all data */
- $url2 = "https://hspmsolutions.com/3-ups_api/index.php/web/Admin_web/Fetch_info_admin/getAirports";
+$url2 = "https://hspmsolutions.com/3-ups_api/index.php/web/Admin_web/Fetch_info_admin/getAirports";
 curl_setopt($ch, CURLOPT_URL, $url2);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response_ai = curl_exec($ch);
- if($e = curl_error($ch)){
-     echo $e;
- }
- else{
-     $result_ai = json_decode($response_ai); 
- }
- $res_ai = array();
- $res_ai=$result_ai->data;
+if ($e = curl_error($ch)) {
+    echo $e;
+} else {
+    $result_ai = json_decode($response_ai);
+}
+$res_ai = array();
+$res_ai = $result_ai->data;
 
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
- 
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -115,15 +113,15 @@ $response_ai = curl_exec($ch);
                                                 <label class="form-label" for="validationCustom01">Select City</label>
                                                 <select class="form-select" id="city" required>
                                                     <option value="" selected disabled>Select City</option>
-                                                     <?php 
-                                                for($i=0;$i<count($res);$i++){
+                                                    <?php
+                                                    for ($i = 0; $i < count($res); $i++) {
                                                     ?>
-                                                    <option value="<?php echo $res[$i]->city_id ?>"><?php echo $res[$i]->city_name ?></option>
-                                                    <?php   
-                                                 }
-                                                ?>
+                                                        <option value="<?php echo $res[$i]->city_id ?>"><?php echo $res[$i]->city_name ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
 
-                                                      
+
                                                 </select>
                                                 <div class="invalid-feedback">Please Select The State</div>
                                             </div>
@@ -190,34 +188,33 @@ $response_ai = curl_exec($ch);
                                             });
                                         }, false);
                                     })();
-                                     /**********************************ajax*******************************************/
-                                     function addAirport(){
-                                       
-                                    var city=$("#city").val();
-                                    var airport_name=$('#airport_name').val();
-                                    var airport_address=$('#airport_address').val();
-                                    var latitude=$('#latitude').val();
-                                    var Longitude=$('#Longitude').val();
-                                    var airportkm=$('#airportkm').val();
-      $.ajax({
-                    url:'airportinsert.php',
-                    method:'POST',
-                    data:{
-                        city:city,
-                        airport_name:airport_name,
-                        airport_address:airport_address,
-                        latitude:latitude,
-                        Longitude:Longitude,
-                        airportkm:airportkm
-                    },
-                   success:function(data){
-                       alert("airport details added");
-                       window.location.href="./add_airport.php"
-                   }
-                });
-           
-        }
-                                    
+                                    /**********************************ajax*******************************************/
+                                    function addAirport() {
+
+                                        var city = $("#city").val();
+                                        var airport_name = $('#airport_name').val();
+                                        var airport_address = $('#airport_address').val();
+                                        var latitude = $('#latitude').val();
+                                        var Longitude = $('#Longitude').val();
+                                        var airportkm = $('#airportkm').val();
+                                        $.ajax({
+                                            url: './backend/airportinsert.php',
+                                            method: 'POST',
+                                            data: {
+                                                city: city,
+                                                airport_name: airport_name,
+                                                airport_address: airport_address,
+                                                latitude: latitude,
+                                                Longitude: Longitude,
+                                                airportkm: airportkm
+                                            },
+                                            success: function(data) {
+                                                alert("airport details added");
+                                                window.location.href = "./add_airport.php"
+                                            }
+                                        });
+
+                                    }
                                 </script>
                             </div>
                         </div>
@@ -234,7 +231,7 @@ $response_ai = curl_exec($ch);
                                 <div class="table-responsive m-t-40">
                                     <table id="example23" class="display nowrap table table-hover table-striped border mt-4" cellspacing="0" width="100%">
                                         <thead>
-                                          
+
                                             <tr>
                                                 <th>Sr.</th>
                                                 <th>Airport Name</th>
@@ -261,45 +258,41 @@ $response_ai = curl_exec($ch);
                                             </tr>
                                         </tfoot>
                                         <tbody>
-                                        <?php
-                                            for($i=1;$i<count($res_ai);$i++)
-                                            {
-                                            ?>
-                                            <tr>
-                                               
-                                                <td><?php echo $i ?></td>
-                                                <td><?php echo $res_ai[$i]->airport_name?></td>
-                                                <td><?php echo $res_ai[$i]->city_name?></td>
-                                                <td><?php echo $res_ai[$i]->airport_address?></td>
-                                                <td><?php echo $res_ai[$i]->airport_km?></td>
-                                                <td><?php echo $res_ai[$i]->airport_latitude?></td>
-                                                <td><?php echo $res_ai[$i]->airport_longitude?></td>
-                                               
-                                                <td class="active_deactive_icons">
-                                                    <?php
-                                                    if($res_ai[$i]->airport_status)
-                                                    {
-                                                    ?>
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <?php
-                                                    } else{
-                                                    ?>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                    <?php
-                                            }
-                                                    ?>
-                                                </td>
-                                                <td class="curd_icons">
-                                                <a class="edit" type="button" title="Edit" data-id="<?php echo $res_ai[$i]->airport_id ?>"
-                                                    onclick="$('#dataid').val($(this).data('id')); $('#showmodal').modal('show');" 
-                                                    data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                  <!-- /  <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a> -->
-                                                </td>
-                                            </tr>
                                             <?php
-                                            } 
+                                            for ($i = 1; $i < count($res_ai); $i++) {
                                             ?>
-                                           
+                                                <tr>
+
+                                                    <td><?php echo $i ?></td>
+                                                    <td><?php echo $res_ai[$i]->airport_name ?></td>
+                                                    <td><?php echo $res_ai[$i]->city_name ?></td>
+                                                    <td><?php echo $res_ai[$i]->airport_address ?></td>
+                                                    <td><?php echo $res_ai[$i]->airport_km ?></td>
+                                                    <td><?php echo $res_ai[$i]->airport_latitude ?></td>
+                                                    <td><?php echo $res_ai[$i]->airport_longitude ?></td>
+
+                                                    <td class="active_deactive_icons">
+                                                        <?php
+                                                        if ($res_ai[$i]->airport_status) {
+                                                        ?>
+                                                            <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </td>
+                                                    <td class="curd_icons">
+                                                        <a class="edit" type="button" title="Edit" data-id="<?php echo $res_ai[$i]->airport_id ?>" onclick="$('#dataid').val($(this).data('id')); $('#showmodal').modal('show');" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
+                                                        <!-- /  <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a> -->
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                            }
+                                            ?>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -350,13 +343,13 @@ $response_ai = curl_exec($ch);
                                 <div class="form-group">
                                     <label class="form-label" for="validationCustom01">Select City</label>
                                     <select class="form-select" id="city_name" required>
-                                    <?php 
-                                                for($i=0;$i<count($res);$i++){
-                                                    ?>
-                                                    <option value="<?php echo $res[$i]->city_id ?>"><?php echo $res[$i]->city_name ?></option>
-                                                    <?php   
-                                                 }
-                                                ?>
+                                        <?php
+                                        for ($i = 0; $i < count($res); $i++) {
+                                        ?>
+                                            <option value="<?php echo $res[$i]->city_id ?>"><?php echo $res[$i]->city_name ?></option>
+                                        <?php
+                                        }
+                                        ?>
                                     </select>
                                     <div class="invalid-feedback">Please Select The State</div>
                                 </div>
@@ -395,7 +388,7 @@ $response_ai = curl_exec($ch);
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="validationCustom01">Area Of Airport (KM)</label>
                                 <input type="text" class="form-control" id="airportkm" placeholder="Area Of Airport" required>
-                                <input type="hidden" name="dataid" id="dataid" value=""/>
+                                <input type="hidden" name="dataid" id="dataid" value="" />
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -436,58 +429,56 @@ $response_ai = curl_exec($ch);
         })();
 
         /*********************/
-                                    
-                                     /****************selector******************/
-                                 $(document).ready(function() {
-$('#city').on('change', function() {
-var city_id = this.value;
-$.ajax({
-url: "./backend/states-by-city.php",
-type: "POST",
-data: {
-city_id: city_id
-},
-cache: false,
-success: function(result){
-$("#airport_name").html(result);
-$("#airport_address").html(result);
- 
-}
-});
-});  
-});
 
-                          $("document").ready(function() {
-                                        $("#airportupdate").submit(function(e) {
-                                            // e.preventDefault();
-                                            var city_name= $("#city_name").val();
-                                            var city = $("#validationCustom01").val();
-                                            var id = $("#dataid").val();
-                                            // console.log(state);
-                                            // console.log(city);
-                                            // console.log(id);
-                                            if(state !='' && city != ''){ 
-                                            $.ajax({
-                                                url: './backend/cityUpdate.php',
-                                                method: 'POST',
-                                                data: {
-                                                    type:"update",
-                                                    state: state,
-                                                    city: city,
-                                                    id: id
-                                                },
-                                                success: function(data) {
-                                                    alert("City updated");
-                                                    // $('#cityTable').html(data);
-                                                }
-                                            });
-                                        }
-                                        else{
-                                            alert("Insert all details")
-                                        }
-                                        });
-                                    });
+        /****************selector******************/
+        $(document).ready(function() {
+            $('#city').on('change', function() {
+                var city_id = this.value;
+                $.ajax({
+                    url: "./backend/states-by-city.php",
+                    type: "POST",
+                    data: {
+                        city_id: city_id
+                    },
+                    cache: false,
+                    success: function(result) {
+                        $("#airport_name").html(result);
+                        $("#airport_address").html(result);
 
+                    }
+                });
+            });
+        });
+
+        $("document").ready(function() {
+            $("#airportupdate").submit(function(e) {
+                // e.preventDefault();
+                var city_name = $("#city_name").val();
+                var city = $("#validationCustom01").val();
+                var id = $("#dataid").val();
+                // console.log(state);
+                // console.log(city);
+                // console.log(id);
+                if (state != '' && city != '') {
+                    $.ajax({
+                        url: './backend/cityUpdate.php',
+                        method: 'POST',
+                        data: {
+                            type: "update",
+                            state: state,
+                            city: city,
+                            id: id
+                        },
+                        success: function(data) {
+                            alert("City updated");
+                            // $('#cityTable').html(data);
+                        }
+                    });
+                } else {
+                    alert("Insert all details")
+                }
+            });
+        });
     </script>
 
     <!-- ============================================================== -->

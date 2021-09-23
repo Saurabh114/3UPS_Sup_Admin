@@ -1,36 +1,35 @@
-<?php 
+<?php
 $ch = curl_init();
 $url = "https://www.hspmsolutions.com/3-ups_api/index.php/web/Admin_web/Fetch_info_admin/getStates";
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response = curl_exec($ch);
- if($e = curl_error($ch)){
-     echo $e;
- }
- else{
-     $result = json_decode($response); 
- }
- $res = array();
- $res=$result->data;
- /**************************fetch all data city */
- $ch = curl_init();
+if ($e = curl_error($ch)) {
+    echo $e;
+} else {
+    $result = json_decode($response);
+}
+$res = array();
+$res = $result->data;
+/**************************fetch all data city */
+$ch = curl_init();
 $url = "https://www.hspmsolutions.com/3-ups_api/index.php/web/Admin_web/Fetch_info_admin/getCities";
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $response_city = curl_exec($ch);
- if($e = curl_error($ch)){
-     echo $e;
- }
- else{
-     $result_city = json_decode($response_city); 
- }
- $res_city = array();
- $res_city=$result_city->data;
+if ($e = curl_error($ch)) {
+    echo $e;
+} else {
+    $result_city = json_decode($response_city);
+}
+$res_city = array();
+$res_city = $result_city->data;
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -115,13 +114,13 @@ $response_city = curl_exec($ch);
                                                 <label class="form-label" for="validationCustom01">Select State</label>
                                                 <select class="form-select" id="state" name="state" required>
                                                     <option value="" selected disabled>Select State</option>
-                                                    <?php 
-                                                for($i=0;$i<count($res);$i++){
+                                                    <?php
+                                                    for ($i = 0; $i < count($res); $i++) {
                                                     ?>
-                                                    <option value="<?php echo $res[$i]->state_id ?>"><?php echo $res[$i]->state_name ?></option>
-                                                    <?php  
-                                                 }
-                                                ?>
+                                                        <option value="<?php echo $res[$i]->state_id ?>"><?php echo $res[$i]->state_name ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </select>
                                                 <div class="invalid-feedback">Please Select The State</div>
                                             </div>
@@ -155,34 +154,32 @@ $response_city = curl_exec($ch);
                                             });
                                         }, false);
                                     })();
-                                     /**********************************ajax*******************************************/
-                                     function addCity(){
-                var state=$("#state").val();
-                var city=$("#city").val();
-              
-                
-                $.ajax({
-                    url:'cityinsert.php',
-                    method:'POST',
-                    data:{
-                        state:state,
-                        city:city
-                    },
-                   success:function(data){
-                       alert("city details added");
-                       window.href.location="add_city.php"
-                   }
-                });
-            }
+                                    /**********************************ajax*******************************************/
+                                    function addCity() {
+                                        var state = $("#state").val();
+                                        var city = $("#city").val();
 
 
-              </script>
+                                        $.ajax({
+                                            url: './backend/cityinsert.php',
+                                            method: 'POST',
+                                            data: {
+                                                state: state,
+                                                city: city
+                                            },
+                                            success: function(data) {
+                                                alert("city details added");
+                                                window.href.location = "add_city.php"
+                                            }
+                                        });
+                                    }
+                                </script>
                             </div>
                         </div>
                     </div>
 
                 </div>
-                
+
 
                 <div class="row">
                     <div class="col-12">
@@ -197,7 +194,7 @@ $response_city = curl_exec($ch);
                                                 <th>City Name</th>
                                                 <th>State Name</th>
                                                 <th>Status</th>
-                                               
+
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -206,36 +203,35 @@ $response_city = curl_exec($ch);
                                                 <th>Sr.</th>
                                                 <th>City Name</th>
                                                 <th>State Name</th>
-                                               <th>Status</th>
-                                                
+                                                <th>Status</th>
+
                                                 <th>Action</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
                                             <?php
-                                            for($i=1;$i<count($res_city);$i++)
-                                            {
+                                            for ($i = 1; $i < count($res_city); $i++) {
                                             ?>
-                                            <tr>
-                                                <td><?php echo $i ?></td>
-                                                <td><?php echo $res_city[$i]->city_name?></td>
-                                                <td><?php echo $res_city[$i]->state_id?></td>
-                                                
-                                                
-                                              
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
+                                                <tr>
+                                                    <td><?php echo $i ?></td>
+                                                    <td><?php echo $res_city[$i]->city_name ?></td>
+                                                    <td><?php echo $res_city[$i]->state_id ?></td>
+
+
+
+                                                    <td class="active_deactive_icons">
+                                                        <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
+                                                        <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                    </td>
+                                                    <td class="curd_icons">
+                                                        <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
+                                                        <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
+                                                    </td>
+                                                </tr>
                                             <?php
                                             }
                                             ?>
-                                           
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -267,7 +263,7 @@ $response_city = curl_exec($ch);
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
-    
+
     <!-- ============================================================== 
                    Edit Modal
     ================================================================ -->
@@ -356,25 +352,24 @@ $response_city = curl_exec($ch);
             }, false);
         })();
 
-                                      /*****************selector***********************/
-                                      function addCity(){
-                                       
-var state_id = this.value;
-$.ajax({
-url: "./backend/states-by-state.php",
-type: "POST",
-data: {
-state_id: state_id
-},
-cache: false,
-success: function(result){
-$("#city").html(result);
- 
-}
-});
+        /*****************selector***********************/
+        function addCity() {
 
-}
-                  
+            var state_id = this.value;
+            $.ajax({
+                url: "./backend/states-by-state.php",
+                type: "POST",
+                data: {
+                    state_id: state_id
+                },
+                cache: false,
+                success: function(result) {
+                    $("#city").html(result);
+
+                }
+            });
+
+        }
     </script>
 </body>
 
