@@ -1,3 +1,10 @@
+<?
+session_start();
+if (isset($_SESSION['admin_id'])) {
+    header("Location: ./index.php");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +23,8 @@
     <link href="./assets/css/pages/login-register-lock.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="./assets/css/style.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
 </head>
 
@@ -36,23 +45,23 @@
         <div class="login-register" style="background-image:url(./assets/images/background/login-register.jpg);">
             <div class="login-box card">
                 <div class="card-body">
-                    <form class="form-horizontal form-material" id="loginform" action="http://eliteadmin.themedesigner.in/demos/bt4/dark/index.html">
+                    <form class="form-horizontal form-material" id="loginform" >
                         <h3 class="text-center m-b-20">Sign In</h3>
                         <div class="form-group ">
                             <div class="col-xs-12">
-                                <input class="form-control" type="text" required="" placeholder="Username"> </div>
+                                <input class="form-control" id="email" type="text" required="" placeholder="Enter Email"> </div>
                         </div>
                         <div class="form-group">
                             <div class="col-xs-12">
-                                <input class="form-control" type="password" required="" placeholder="Password"> </div>
+                                <input class="form-control" id="myPassword" type="password" required="" placeholder="Enter Password"> </div>
                         </div>
                         <div class="form-group row">
                             <div class="col-md-12">
                                 <div class="d-flex no-block align-items-center">
-                                    <div class="form-check">
+                                    <!-- <div class="form-check">
                                         <input type="checkbox" class="form-check-input" id="customCheck1">
                                         <label class="form-check-label" for="customCheck1">Remember me</label>
-                                    </div>
+                                    </div> -->
                                     <div class="ms-auto">
                                         <a href="javascript:void(0)" id="to-recover" class="text-muted"><i class="fas fa-lock m-r-5"></i> Forgot pwd?</a>
                                     </div>
@@ -70,7 +79,7 @@
                             </div>
                         </div>
                     </form>
-                    <form class="form-horizontal" id="recoverform" action="http://eliteadmin.themedesigner.in/demos/bt4/dark/index.html">
+                    <form class="form-horizontal" id="recoverform">
                         <div class="form-group ">
                             <div class="col-xs-12">
                                 <h3>Recover Password</h3>
@@ -118,6 +127,57 @@
         });
     </script>
 
+    <script>
+       
+        
+        $('#loginform').on('submit', function(e) {
+          const data = "";
+              e.preventDefault();
+            
+              // loader();
+              $.ajax({
+                url: './backend/script.php',
+                type: 'POST',
+                // dataType: 'json',
+                data: {
+                  type: "login",
+                  mail: $('#email').val(),
+                  pass: $('#myPassword').val()
+                },
+                success: function(data) {
+                  console.log(data);
+                  if(data === "true"){
+        
+                      swal({
+                          title: "Login successfull",
+                          icon: "success",
+                        }).then(function() {
+                            window.location.href = "./index.php";
+                        });
+                    }  
+                    else{
+                        swal({
+                          title: "Invalid details",
+                          icon: "warning",
+                        }).then(function() {
+                            window.location.href = "./login.php";
+                        });
+                    }  
+                    
+                        
+                        
+              },
+              
+              error: function(response) {
+                console.log("Error")
+                console.log(response);
+                }
+              });
+        
+              return false;
+        
+            });
+    </script>
 </body>
 
 </html>

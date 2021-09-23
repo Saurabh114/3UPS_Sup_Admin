@@ -1,3 +1,34 @@
+<?php
+$ch = curl_init();
+$url = "http://localhost/3-ups_api/index.php/web/Fetch_details/Fetch_info/getStates";
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response = curl_exec($ch);
+if ($e = curl_error($ch)) {
+    echo $e;
+} else {
+    $result = json_decode($response);
+}
+$res = array();
+$res = $result->data;
+
+// city
+
+$url2 = "http://localhost/3-ups_api/index.php/web/Fetch_details/Fetch_info/getCities";
+curl_setopt($ch, CURLOPT_URL, $url2);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$response_city = curl_exec($ch);
+ if($e = curl_error($ch)){
+     echo $e;
+ }
+ else{
+     $result_city = json_decode($response_city); 
+ }
+ $res_city = array();
+ $res_city=$result_city->data;
+   curl_close($ch);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -78,32 +109,33 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="card-title">Add City</h4>
-                                <form class="needs-validation" novalidate>
+                                <form class="needs-validation" novalidate id="cityform" method="post">
                                     <div class="row">
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-4 mb-3">
                                             <div class="form-group">
                                                 <label class="form-label" for="validationCustom01">Select State</label>
-                                                <select class="form-select" required>
+                                                <select class="form-select" id="state" name="state" required>
                                                     <option value="" selected disabled>Select State</option>
-                                                    <option value="Maharashtra">Maharashtra</option>
-                                                    <option value="Kerala">Kerala</option>
-                                                    <option value="Kashmir">Kashmir</option>
-                                                    <option value="Georgia">Georgia</option>
+                                                    <?php
+                                                    for ($i = 0; $i < count($res); $i++) {
+                                                    ?>
+                                                        <option value="<?php echo $res[$i]->state_id ?>"><?php echo $res[$i]->state_name ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
                                                 </select>
                                                 <div class="invalid-feedback">Please Select The State</div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 mb-3">
+                                        <div class="col-md-4 mb-3">
                                             <label class="form-label" for="validationCustom01">Add City</label>
-                                            <input type="text" class="form-control" id="validationCustom01" placeholder="Add City" required>
+                                            <input type="text" class="form-control" id="city" name="city" placeholder="Add City" required>
                                             <div class="valid-feedback">
                                                 Looks good!
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="text-center">
-                                        <button class="btn btn-primary text-white" type="submit">Add</button>
-                                    </div>
+                                    <button class="btn btn-primary text-white" type="submit" id="addcity"  >Add</button>
                                 </form>
                                 <script>
                                     // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -141,12 +173,12 @@
                                     <table id="example23" class="display nowrap table table-hover table-striped border mt-4" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Sr.</th>
-                                                <th>City Name</th>
-                                                <th>State Name</th>
-                                                <th>Country Name</th>
-                                                <th>Latitude</th>
-                                                <th>Longitude</th>
+                                            <th>Sr.</th>
+                                                <th>City ID</th>
+                                                <th>Country </th>
+                                                <th>State </th>
+                                                <th>City </th>
+                                                
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
@@ -154,144 +186,51 @@
                                         <tfoot>
                                             <tr>
                                                 <th>Sr.</th>
-                                                <th>City Name</th>
-                                                <th>State Name</th>
-                                                <th>Country Name</th>
-                                                <th>Latitude</th>
-                                                <th>Longitude</th>
+                                                <th>City ID</th>
+                                                <th>Country</th>
+                                                <th>State </th>
+                                                <th>City </th>
+                                                
                                                 <th>Status</th>
                                                 <th>Action</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
+                                        <?php 
+                                                for($i=0;$i<count($res_city);$i++){
+                                                    ?>
                                             <tr>
-                                                <td>1</td>
-                                                <td>Pune</td>
-                                                <td>Maharashtra</td>
-                                                <td>India</td>
-                                                <td>20.5937° N</td>
-                                                <td>78.9629° E</td>
+                                                <td><?php echo $i ?></td>
+                                                <td><?php echo $res_city[$i]->city_id ?></td>
+                                                <td><?php echo $res_city[$i]->country_name?></td>
+                                                <td><?php echo $res_city[$i]->state_name?></td>
+                                                <td><?php echo $res_city[$i]->city_name ?></td>
+                                                <?php 
+                                                if($res_city[$i]->city_status)
+                                                {
+                                                ?>
                                                 <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                    <a class="active" href="javascript:void(0)"
+                                                    data-id="<?php echo $res_city[$i]->city_id ?>"
+                                                     title="Active"><i class="far fa-check-circle"></i></a>
+                                                 <?php } else { ?>    
+                                                    <a class="dactive" href="javascript:void(0)"
+                                                    data-id="<?php echo $res_city[$i]->city_id ?>"
+                                                     title="Dactive"><i class="far fa-times-circle"></i></a>
                                                 </td>
+                                                <?php } ?>
+
                                                 <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
+                                                    <a class="edit" type="button" title="Edit" data-id="<?php echo $res_city[$i]->city_id ?>"
+                                                    onclick="$('#dataid').val($(this).data('id')); $('#showmodal').modal('show');" 
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
+                                                    <!-- <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a> -->
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Pune</td>
-                                                <td>Maharashtra</td>
-                                                <td>India</td>
-                                                <td>37.0902° N</td>
-                                                <td>95.7129° W</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Pune</td>
-                                                <td>Maharashtra</td>
-                                                <td>India</td>
-                                                <td>51.9194° N</td>
-                                                <td>19.1451° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Pune</td>
-                                                <td>Maharashtra</td>
-                                                <td>India</td>
-                                                <td>36.2048° N</td>
-                                                <td>138.2529° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Pune</td>
-                                                <td>Maharashtra</td>
-                                                <td>India</td>
-                                                <td>35.8617° N</td>
-                                                <td>104.1954° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>Pune</td>
-                                                <td>Maharashtra</td>
-                                                <td>India</td>
-                                                <td>4.5709° N</td>
-                                                <td>74.2973° W</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>7</td>
-                                                <td>Pune</td>
-                                                <td>Maharashtra</td>
-                                                <td>India</td>
-                                                <td>61.9241° N</td>
-                                                <td>25.7482° E</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>8</td>
-                                                <td>Pune</td>
-                                                <td>Maharashtra</td>
-                                                <td>India</td>
-                                                <td>64.9631° N</td>
-                                                <td>19.0208° W</td>
-                                                <td class="active_deactive_icons">
-                                                    <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                    <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                </td>
-                                                <td class="curd_icons">
-                                                    <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                    <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                </td>
-                                            </tr>
+                                            <?php 
+                                                }
+                                            ?>
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -336,35 +275,39 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                 </div>
                 <div class="modal-body">
-                    <form class="needs-validation" novalidate>
+                    <form class="needs-validation" novalidate id="cityUpdate">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label" for="validationCustom01">Select State</label>
-                                    <select class="form-select" required>
-                                        <option value="" selected disabled>Select State</option>
-                                        <option value="Maharashtra">Maharashtra</option>
-                                        <option value="Kerala">Kerala</option>
-                                        <option value="Kashmir">Kashmir</option>
-                                        <option value="Georgia">Georgia</option>
-                                    </select>
+                                    <select class="form-select" id="state_update" name="state" required>
+                                                    <option value="" selected disabled>Select State</option>
+                                                    <?php
+                                                    for ($i = 0; $i < count($res); $i++) {
+                                                    ?>
+                                                        <option value="<?php echo $res[$i]->state_id ?>"><?php echo $res[$i]->state_name ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </select>
                                     <div class="invalid-feedback">Please Select The State</div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="validationCustom01">Add City</label>
-                                <input type="text" class="form-control" id="validationCustom01" placeholder="Add City" required>
+                                <input type="text" class="form-control" id="validationCustom01"  placeholder="Add City" required>
+                                <input type="hidden" name="dataid" id="dataid" value=""/>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary text-white">Update</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary text-white">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -372,7 +315,9 @@
     <!-- ============================================================== 
                         Edit Modal End
      ============================================================== -->
-
+     <script>
+          
+                                        </script>
 
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
@@ -472,6 +417,64 @@
             });
             $('.buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel').addClass('btn btn-primary me-1');
         });
+
+
+
+        $("document").ready(function() {
+                                        $("#cityform").submit(function(e) {
+                                            // e.preventDefault();
+                                            var state = $("#state").val();
+                                            var city = $("#city").val();
+                                            console.log(state);
+                                            console.log(city);
+
+                                            $.ajax({
+                                                url: './backend/cityinsert.php',
+                                                method: 'POST',
+                                                data: {
+                                                    state: state,
+                                                    city: city
+                                                },
+                                                success: function(data) {
+                                                    alert("City Added");
+                                                    // $('#cityTable').html(data);
+                                                }
+                                            });
+                                        });
+                                    });
+
+                                    $("document").ready(function() {
+                                        $("#cityUpdate").submit(function(e) {
+                                            // e.preventDefault();
+                                            var state = $("#state_update").val();
+                                            var city = $("#validationCustom01").val();
+                                            var id = $("#dataid").val();
+                                            // console.log(state);
+                                            // console.log(city);
+                                            // console.log(id);
+                                            if(state !='' && city != ''){ 
+                                            $.ajax({
+                                                url: './backend/cityUpdate.php',
+                                                method: 'POST',
+                                                data: {
+                                                    type:"update",
+                                                    state: state,
+                                                    city: city,
+                                                    id: id
+                                                },
+                                                success: function(data) {
+                                                    alert("City updated");
+                                                    // $('#cityTable').html(data);
+                                                }
+                                            });
+                                        }
+                                        else{
+                                            alert("Insert all details")
+                                        }
+                                        });
+                                    });
+
+            
     </script>
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
