@@ -1,3 +1,12 @@
+<?
+session_start();
+if (isset($_SESSION['admin_id'])) {
+    header("Location: ./index.php");
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,6 +25,8 @@
     <link href="./assets/css/pages/login-register-lock.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="./assets/css/style.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
 
 </head>
 
@@ -128,6 +139,57 @@
         });
     </script>
 
+    <script>
+       
+        
+        $('#loginform').on('submit', function(e) {
+          const data = "";
+              e.preventDefault();
+            
+              // loader();
+              $.ajax({
+                url: './backend/script.php',
+                type: 'POST',
+                // dataType: 'json',
+                data: {
+                  type: "login",
+                  mail: $('#email').val(),
+                  pass: $('#myPassword').val()
+                },
+                success: function(data) {
+                  console.log(data);
+                  if(data === "true"){
+        
+                      swal({
+                          title: "Login successfull",
+                          icon: "success",
+                        }).then(function() {
+                            window.location.href = "./index.php";
+                        });
+                    }  
+                    else{
+                        swal({
+                          title: "Invalid details",
+                          icon: "warning",
+                        }).then(function() {
+                            window.location.href = "./login.php";
+                        });
+                    }  
+                    
+                        
+                        
+              },
+              
+              error: function(response) {
+                console.log("Error")
+                console.log(response);
+                }
+              });
+        
+              return false;
+        
+            });
+    </script>
 </body>
 
 </html>

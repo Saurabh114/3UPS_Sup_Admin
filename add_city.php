@@ -190,9 +190,12 @@ $res_city = $result_city->data;
                                     <table id="example23" class="display nowrap table table-hover table-striped border mt-4" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th>Sr.</th>
-                                                <th>City Name</th>
-                                                <th>State Name</th>
+                                            <th>Sr.</th>
+                                                <th>City ID</th>
+                                                <th>Country </th>
+                                                <th>State </th>
+                                                <th>City </th>
+                                                
                                                 <th>Status</th>
 
                                                 <th>Action</th>
@@ -201,37 +204,52 @@ $res_city = $result_city->data;
                                         <tfoot>
                                             <tr>
                                                 <th>Sr.</th>
-                                                <th>City Name</th>
-                                                <th>State Name</th>
+                                                <th>City ID</th>
+                                                <th>Country</th>
+                                                <th>State </th>
+                                                <th>City </th>
+                                                
                                                 <th>Status</th>
 
                                                 <th>Action</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
-                                            <?php
-                                            for ($i = 1; $i < count($res_city); $i++) {
+                                        <?php 
+                                                for($i=0;$i<count($res_city);$i++){
+                                                    ?>
+                                            <tr>
+                                                <td><?php echo $i ?></td>
+                                                <td><?php echo $res_city[$i]->city_id ?></td>
+                                                <td><?php echo $res_city[$i]->country_name?></td>
+                                                <td><?php echo $res_city[$i]->state_name?></td>
+                                                <td><?php echo $res_city[$i]->city_name ?></td>
+                                                <?php 
+                                                if($res_city[$i]->city_status)
+                                                {
+                                                ?>
+                                                <td class="active_deactive_icons">
+                                                    <a class="active" href="javascript:void(0)"
+                                                    data-id="<?php echo $res_city[$i]->city_id ?>"
+                                                     title="Active"><i class="far fa-check-circle"></i></a>
+                                                 <?php } else { ?>    
+                                                    <a class="dactive" href="javascript:void(0)"
+                                                    data-id="<?php echo $res_city[$i]->city_id ?>"
+                                                     title="Dactive"><i class="far fa-times-circle"></i></a>
+                                                </td>
+                                                <?php } ?>
+
+                                                <td class="curd_icons">
+                                                    <a class="edit" type="button" title="Edit" data-id="<?php echo $res_city[$i]->city_id ?>"
+                                                    onclick="$('#dataid').val($(this).data('id')); $('#showmodal').modal('show');" 
+                                                    data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
+                                                    <!-- <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a> -->
+                                                </td>
+                                            </tr>
+                                            <?php 
+                                                }
                                             ?>
-                                                <tr>
-                                                    <td><?php echo $i ?></td>
-                                                    <td><?php echo $res_city[$i]->city_name ?></td>
-                                                    <td><?php echo $res_city[$i]->state_id ?></td>
-
-
-
-                                                    <td class="active_deactive_icons">
-                                                        <a class="active" href="javascript:void(0)" title="Active"><i class="far fa-check-circle"></i></a>
-                                                        <a class="dactive" href="javascript:void(0)" title="Dactive"><i class="far fa-times-circle"></i></a>
-                                                    </td>
-                                                    <td class="curd_icons">
-                                                        <a class="edit" type="button" title="Edit" data-bs-toggle="modal" data-bs-target="#exampleModal" data-whatever="@getbootstrap"><i class="far fa-edit"></i></a>
-                                                        <a class="remove" href="javascript:void(0)" title="Remove"><i class="fas fa-trash" aria-hidden="true"></i></a>
-                                                    </td>
-                                                </tr>
-                                            <?php
-                                            }
-                                            ?>
-
+                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -276,35 +294,39 @@ $res_city = $result_city->data;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                 </div>
                 <div class="modal-body">
-                    <form class="needs-validation" novalidate>
+                    <form class="needs-validation" novalidate id="cityUpdate">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label" for="validationCustom01">Select State</label>
-                                    <select class="form-select" required>
-                                        <option value="" selected disabled>Select State</option>
-                                        <option value="Maharashtra">Maharashtra</option>
-                                        <option value="Kerala">Kerala</option>
-                                        <option value="Kashmir">Kashmir</option>
-                                        <option value="Georgia">Georgia</option>
-                                    </select>
+                                    <select class="form-select" id="state_update" name="state" required>
+                                                    <option value="" selected disabled>Select State</option>
+                                                    <?php
+                                                    for ($i = 0; $i < count($res); $i++) {
+                                                    ?>
+                                                        <option value="<?php echo $res[$i]->state_id ?>"><?php echo $res[$i]->state_name ?></option>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                </select>
                                     <div class="invalid-feedback">Please Select The State</div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="validationCustom01">Add City</label>
-                                <input type="text" class="form-control" id="validationCustom01" placeholder="Add City" required>
+                                <input type="text" class="form-control" id="validationCustom01"  placeholder="Add City" required>
+                                <input type="hidden" name="dataid" id="dataid" value=""/>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary text-white">Update</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary text-white">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -312,7 +334,30 @@ $res_city = $result_city->data;
     <!-- ============================================================== 
                         Edit Modal End
      ============================================================== -->
+     <script>
+          
+                                        </script>
 
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
 
     <!-- ============================================================== -->
     <!-- All Jquery -->
@@ -331,7 +376,125 @@ $res_city = $result_city->data;
     <script src="./assets/node_modules/sparkline/jquery.sparkline.min.js"></script>
     <!--Custom JavaScript -->
     <script src="./assets/js/custom.min.js"></script>
+    <script src="./assets/node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="./assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js"></script>
+    <!-- start - This is for export functionality only -->
+    <script src="./assets/js/dataTables.buttons.min.js"></script>
+    <script src="./assets/js/buttons.flash.min.js"></script>
+    <script src="./assets/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="./assets/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+    <script src="./assets/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+    <script src="./assets/js/buttons.html5.min.js"></script>
+    <script src="./assets/js/buttons.print.min.js"></script>
+    <!-- end - This is for export functionality only -->
+    <script>
+        $(function() {
+            $('#myTable').DataTable();
+            var table = $('#example').DataTable({
+                "columnDefs": [{
+                    "visible": false,
+                    "targets": 2
+                }],
+                "order": [
+                    [2, 'asc']
+                ],
+                "displayLength": 25,
+                "drawCallback": function(settings) {
+                    var api = this.api();
+                    var rows = api.rows({
+                        page: 'current'
+                    }).nodes();
+                    var last = null;
+                    api.column(2, {
+                        page: 'current'
+                    }).data().each(function(group, i) {
+                        if (last !== group) {
+                            $(rows).eq(i).before('<tr class="group"><td colspan="5">' + group + '</td></tr>');
+                            last = group;
+                        }
+                    });
+                }
+            });
+            // Order by the grouping
+            $('#example tbody').on('click', 'tr.group', function() {
+                var currentOrder = table.order()[0];
+                if (currentOrder[0] === 2 && currentOrder[1] === 'asc') {
+                    table.order([2, 'desc']).draw();
+                } else {
+                    table.order([2, 'asc']).draw();
+                }
+            });
+            // responsive table
+            $('#config-table').DataTable({
+                responsive: true
+            });
+            $('#example23').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+            $('.buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel').addClass('btn btn-primary me-1');
+        });
 
+
+
+        $("document").ready(function() {
+                                        $("#cityform").submit(function(e) {
+                                            // e.preventDefault();
+                                            var state = $("#state").val();
+                                            var city = $("#city").val();
+                                            console.log(state);
+                                            console.log(city);
+
+                                            $.ajax({
+                                                url: './backend/cityinsert.php',
+                                                method: 'POST',
+                                                data: {
+                                                    state: state,
+                                                    city: city
+                                                },
+                                                success: function(data) {
+                                                    alert("City Added");
+                                                    // $('#cityTable').html(data);
+                                                }
+                                            });
+                                        });
+                                    });
+
+                                    $("document").ready(function() {
+                                        $("#cityUpdate").submit(function(e) {
+                                            // e.preventDefault();
+                                            var state = $("#state_update").val();
+                                            var city = $("#validationCustom01").val();
+                                            var id = $("#dataid").val();
+                                            // console.log(state);
+                                            // console.log(city);
+                                            // console.log(id);
+                                            if(state !='' && city != ''){ 
+                                            $.ajax({
+                                                url: './backend/cityUpdate.php',
+                                                method: 'POST',
+                                                data: {
+                                                    type:"update",
+                                                    state: state,
+                                                    city: city,
+                                                    id: id
+                                                },
+                                                success: function(data) {
+                                                    alert("City updated");
+                                                    // $('#cityTable').html(data);
+                                                }
+                                            });
+                                        }
+                                        else{
+                                            alert("Insert all details")
+                                        }
+                                        });
+                                    });
+
+            
+    </script>
     <script>
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
