@@ -284,12 +284,14 @@ $response = curl_exec($ch);
                                 </div>
                             </div>
                         </div>
-                    </form>
+                        
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary text-white">Update</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -341,6 +343,7 @@ $response = curl_exec($ch);
                    }
                 });
             }
+            /****************************update country data************** */
             $("document").ready(function() {
                                         $("#countryUpdate").submit(function(e) {
                                        
@@ -349,25 +352,33 @@ $response = curl_exec($ch);
                 var country_lat=("#country_lat").val();
                 var country_long=("#country_long").val();
                 var id = $("#dataid").val();
-                if(country_name !='' && mobile_country_code != '' && country_lat !='' && country_long !=''){
+                console.log(country_name);
+                console.log(country_lat);
+                console.log(country_long);
+                console.log(id);
+               if(country_name !='' && mobile_country_code != '' && country_lat !='' && country_long !=''){
                 $ajax({
-                    type:'update',
+                   // type:'update',
                     url:'countryUpdate.php',
                     method:'POST',
                     data:{
                        country_name:country_name,
                        mobile_country_code:mobile_country_code,
                        country_lat:country_lat,
-                       country_long:country_long
+                       country_long:country_long,
+                      
                     },
                     success:function(data){
                         alert("Country Updated")
+                        window.location.href="./add_country.php"
+                        console.log(mobile_country_code)
+                
                     }
                 });
             }
             else{
                 alert("Insert all details")
-            }
+        }
         });
     });
     </script>
