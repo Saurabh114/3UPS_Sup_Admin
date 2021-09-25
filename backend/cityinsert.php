@@ -2,7 +2,7 @@
 $state=$_POST['state'];
 $city=$_POST['city'];
    $city_data = array("ci_state"=>$state,"ci_name"=>$city);
-   $url='http://localhost/3-ups_api/index.php/web/Insert_details/Insert_info/insertCity';
+   $url='https://www.hspmsolutions.com/3-ups_api/index.php/web/Admin_web/Insert_info_admin/insertCity';
    //$string = http_build_query($data);
    $ch = curl_init();
 
