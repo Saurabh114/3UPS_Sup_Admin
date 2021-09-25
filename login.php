@@ -51,7 +51,7 @@ if (isset($_SESSION['admin_id'])) {
                         <h3 class="text-center m-b-20">Sign In</h3>
                         <div class="form-group ">
                             <div class="col-xs-12">
-                                <input class="form-control" type="text" required="" placeholder="Username" required>
+                                <input class="form-control" type="text" required="" placeholder="Email" id="email" required>
                             </div>
                         </div>
                         <div class="form-group">

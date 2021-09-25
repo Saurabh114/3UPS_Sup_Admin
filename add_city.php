@@ -115,7 +115,7 @@ $res_city = $result_city->data;
                                                 <select class="form-select" id="state" name="state" required>
                                                     <option value="" selected disabled>Select State</option>
                                                     <?php
-                                                    for ($i = 0; $i < count($res); $i++) {
+                                                    for ($i = 0; $i <= count($res); $i++) {
                                                     ?>
                                                         <option value="<?php echo $res[$i]->state_id ?>"><?php echo $res[$i]->state_name ?></option>
                                                     <?php
@@ -154,7 +154,7 @@ $res_city = $result_city->data;
                                             });
                                         }, false);
                                     })();
-                                    /**********************************ajax*******************************************/
+                                    /**********************************Add City Data*******************************************/
                                     function addCity() {
                                         var state = $("#state").val();
                                         var city = $("#city").val();
@@ -191,8 +191,8 @@ $res_city = $result_city->data;
                                         <thead>
                                             <tr>
                                             <th>Sr.</th>
-                                                <th>City ID</th>
-                                                <th>Country </th>
+                                                <!-- <th>City ID</th> -->
+                                                <!-- <th>Country </th> -->
                                                 <th>State </th>
                                                 <th>City </th>
                                                 
@@ -204,8 +204,8 @@ $res_city = $result_city->data;
                                         <tfoot>
                                             <tr>
                                                 <th>Sr.</th>
-                                                <th>City ID</th>
-                                                <th>Country</th>
+                                                <!-- <th>City ID</th> -->
+                                                <!-- <th>Country</th> -->
                                                 <th>State </th>
                                                 <th>City </th>
                                                 
@@ -216,12 +216,12 @@ $res_city = $result_city->data;
                                         </tfoot>
                                         <tbody>
                                         <?php 
-                                                for($i=0;$i<count($res_city);$i++){
+                                                for($i=1;$i<count($res_city);$i++){
                                                     ?>
                                             <tr>
                                                 <td><?php echo $i ?></td>
-                                                <td><?php echo $res_city[$i]->city_id ?></td>
-                                                <td><?php echo $res_city[$i]->country_name?></td>
+                                                <!-- <td><?php echo $res_city[$i]->city_id ?></td> -->
+                                                
                                                 <td><?php echo $res_city[$i]->state_name?></td>
                                                 <td><?php echo $res_city[$i]->city_name ?></td>
                                                 <?php 
@@ -294,7 +294,7 @@ $res_city = $result_city->data;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                 </div>
                 <div class="modal-body">
-                    <form class="needs-validation" novalidate id="cityUpdate">
+                    <form class="needs-validation" novalidate id="updatecity" method="post" >
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
@@ -314,7 +314,7 @@ $res_city = $result_city->data;
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="validationCustom01">Add City</label>
-                                <input type="text" class="form-control" id="validationCustom01"  placeholder="Add City" required>
+                                <input type="text" class="form-control" id="cityadd"  placeholder="Add City" required>
                                 <input type="hidden" name="dataid" id="dataid" value=""/>
                                 <div class="valid-feedback">
                                     Looks good!
@@ -323,8 +323,8 @@ $res_city = $result_city->data;
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary text-white">Update</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary text-white" onclick="cityUpdate()">Update</button>
                     </div>
                 </form>
             </div>
@@ -438,60 +438,33 @@ $res_city = $result_city->data;
         });
 
 
-
-        $("document").ready(function() {
-                                        $("#cityform").submit(function(e) {
-                                            // e.preventDefault();
-                                            var state = $("#state").val();
-                                            var city = $("#city").val();
-                                            console.log(state);
-                                            console.log(city);
-
-                                            $.ajax({
-                                                url: './backend/cityinsert.php',
-                                                method: 'POST',
-                                                data: {
-                                                    state: state,
-                                                    city: city
-                                                },
-                                                success: function(data) {
-                                                    alert("City Added");
-                                                    // $('#cityTable').html(data);
-                                                }
-                                            });
-                                        });
-                                    });
-
-                                    $("document").ready(function() {
-                                        $("#cityUpdate").submit(function(e) {
-                                            // e.preventDefault();
-                                            var state = $("#state_update").val();
-                                            var city = $("#validationCustom01").val();
+                                         
+/*********************************update city data*************** */
+                                   function cityUpdate(){
+                                            var state_update = $("#state_update").val();
+                                            var cityadd= $("#cityadd").val();
                                             var id = $("#dataid").val();
-                                            // console.log(state);
-                                            // console.log(city);
-                                            // console.log(id);
-                                            if(state !='' && city != ''){ 
+                                           
+                                            if(state_update !='' && cityadd != ''&& id !=''){ 
                                             $.ajax({
                                                 url: './backend/cityUpdate.php',
                                                 method: 'POST',
                                                 data: {
-                                                    type:"update",
-                                                    state: state,
-                                                    city: city,
+                                                   
+                                                    state_update: state_update,
+                                                    cityadd: cityadd,
                                                     id: id
                                                 },
                                                 success: function(data) {
                                                     alert("City updated");
-                                                    // $('#cityTable').html(data);
+                                                    window.href.location = "add_city.php"
                                                 }
                                             });
                                         }
                                         else{
                                             alert("Insert all details")
                                         }
-                                        });
-                                    });
+                                    }
 
             
     </script>
@@ -515,24 +488,7 @@ $res_city = $result_city->data;
             }, false);
         })();
 
-        /*****************selector***********************/
-        function addCity() {
-
-            var state_id = this.value;
-            $.ajax({
-                url: "./backend/states-by-state.php",
-                type: "POST",
-                data: {
-                    state_id: state_id
-                },
-                cache: false,
-                success: function(result) {
-                    $("#city").html(result);
-
-                }
-            });
-
-        }
+       
     </script>
 </body>
 

@@ -169,7 +169,7 @@ $res_state = $result_state->data;
                                         }, false);
                                     })();
 
-                                    /**********************************ajax*******************************************/
+                                    /**********************************Add State*******************************************/
                                     function addState() {
 
                                         var country = $("#country").val();
@@ -315,12 +315,12 @@ $res_state = $result_state->data;
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                 </div>
                 <div class="modal-body">
-                    <form class="needs-validation" novalidate method="post" id="stateupdate" method="post">
+                    <form class="needs-validation" novalidate method="post" id="stupdate" method="post">
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                     <label class="form-label" for="validationCustom01">Select Country</label>
-                                    <select class="form-select" id="country_name" required>
+                                    <select class="form-select" id="country_id" required>
                                         <option value="" selected disabled>Select Contry</option>
                                         <?php
                                         for ($i = 0; $i < count($res); $i++) {
@@ -335,7 +335,7 @@ $res_state = $result_state->data;
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="validationCustom01">Add State</label>
-                                <input type="text" class="form-control" id="state" placeholder="Add State" required>
+                                <input type="text" class="form-control" id="stateup" placeholder="Add State" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -356,12 +356,13 @@ $res_state = $result_state->data;
                                 </div>
                             </div>
                         </div>
-                    </form>
+                   
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary text-white">Update</button>
+                    <button type="button" class="btn btn-primary text-white" onclick="stateUpdate()">Update</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -405,53 +406,139 @@ $res_state = $result_state->data;
                 });
             }, false);
         })();
-        $("document").ready(function() {
-            $('#country').on('change', function() {
-                var country_id = this.value;
-                $.ajax({
-                    url: "./backend/states-by-states.php",
-                    type: "POST",
-                    data: {
-                        country_id: country_id
-                    },
-                    cache: false,
-                    success: function(result) {
-                        $("#state").html(result);
-
-                    }
-                });
-            });
-        });
-
-        $("document").ready(function() {
-            $("#stateUpdate").submit(function(e) {
-                // e.preventDefault();
-                var country_name = $("#country_name").val();
-                var state = $("#state").val();
+      
+/**************************Update State****************/
+       function stateUpdate(){
+                var country_id = $("#country_id").val();
+                var stateup = $("#stateup").val();
                 var latitude = $("#latitude").val();
                 var longitude = $("#longitude").val();
                 var id = $("#dataid").val();
+                console.log(country_id);
 
-                if (country_name != '' && state != '' && latitude != '' && longitude != '') {
+                if (country_id != '' && stateup != '' && latitude != '' && longitude != '') {
                     $.ajax({
                         url: './backend/stateUpdate.php',
                         method: 'POST',
                         data: {
-                            type: "update",
-                            country_name: country_name,
-                            state: state,
-                            latitude: longitude
+                            
+                            country_id:country_id,
+                            stateup: stateup,
+                            latitude: longitude,
+                            longitude:longitude,
+                            id:id
                         },
                         success: function(data) {
-                            alert("State updated");
+                            alert("State updated")
+                         window.location.href = "./add_state.php"
+                              
                         }
                     });
                 } else {
                     alert("Insert all details")
                 }
-            });
-        });
+            }
     </script>
+     </script>
+
+<!-- ============================================================== -->
+<!-- All Jquery -->
+<!-- ============================================================== -->
+<script src="./assets/node_modules/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="./assets/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="./assets/js/perfect-scrollbar.jquery.min.js"></script>
+<!--Wave Effects -->
+<script src="./assets/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="./assets/js/sidebarmenu.js"></script>
+<!--stickey kit -->
+<script src="./assets/node_modules/sticky-kit-master/dist/sticky-kit.min.js"></script>
+<script src="./assets/node_modules/sparkline/jquery.sparkline.min.js"></script>
+<!--Custom JavaScript -->
+<script src="./assets/js/custom.min.js"></script>
+<script src="./assets/node_modules/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="./assets/node_modules/datatables.net-bs4/js/dataTables.responsive.min.js"></script>
+<!-- start - This is for export functionality only -->
+<script src="./assets/js/dataTables.buttons.min.js"></script>
+<script src="./assets/js/buttons.flash.min.js"></script>
+<script src="./assets/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="./assets/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
+<script src="./assets/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
+<script src="./assets/js/buttons.html5.min.js"></script>
+<script src="./assets/js/buttons.print.min.js"></script>
+<!-- end - This is for export functionality only -->
+<script>
+    $(function() {
+        $('#myTable').DataTable();
+        var table = $('#example').DataTable({
+            "columnDefs": [{
+                "visible": false,
+                "targets": 2
+            }],
+            "order": [
+                [2, 'asc']
+            ],
+            "displayLength": 25,
+            "drawCallback": function(settings) {
+                var api = this.api();
+                var rows = api.rows({
+                    page: 'current'
+                }).nodes();
+                var last = null;
+                api.column(2, {
+                    page: 'current'
+                }).data().each(function(group, i) {
+                    if (last !== group) {
+                        $(rows).eq(i).before('<tr class="group"><td colspan="5">' + group + '</td></tr>');
+                        last = group;
+                    }
+                });
+            }
+        });
+        // Order by the grouping
+        $('#example tbody').on('click', 'tr.group', function() {
+            var currentOrder = table.order()[0];
+            if (currentOrder[0] === 2 && currentOrder[1] === 'asc') {
+                table.order([2, 'desc']).draw();
+            } else {
+                table.order([2, 'asc']).draw();
+            }
+        });
+        // responsive table
+        $('#config-table').DataTable({
+            responsive: true
+        });
+        $('#example23').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ]
+        });
+        $('.buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel').addClass('btn btn-primary me-1');
+    });
+</script>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
 </body>
 
 </html>

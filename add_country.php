@@ -254,7 +254,7 @@ $response = curl_exec($ch);
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="validationCustom01">Country Name</label>
-                                <input type="text" class="form-control" id="country_name" placeholder="Country Name" required>
+                                <input type="text" class="form-control" id="country" placeholder="Country Name" required>
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
@@ -262,7 +262,7 @@ $response = curl_exec($ch);
                             <div class="col-md-6 mb-3">
                                 <label class="form-label" for="validationCustomUsername">Mobile Country Code</label>
                                 <div class="input-group">
-                                    <input type="tel" class="form-control" id="mobile_country_code" placeholder="Mobile Country Code" aria-describedby="inputGroupPrepend" required>
+                                    <input type="tel" class="form-control" id="mobile_code" placeholder="Mobile Country Code" aria-describedby="inputGroupPrepend" required>
                                     <div class="invalid-feedback">
                                         Please add Mobile Country Code.
                                     </div>
@@ -284,12 +284,14 @@ $response = curl_exec($ch);
                                 </div>
                             </div>
                         </div>
-                    </form>
+                        
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary text-white">Update</button>
+                    <button type="button" class="btn btn-primary text-white" onclick="updateCountry()">Update</button>
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -341,35 +343,35 @@ $response = curl_exec($ch);
                    }
                 });
             }
-            $("document").ready(function() {
-                                        $("#countryUpdate").submit(function(e) {
-                                       
-                var country_name=("#country_name").val();
-                var mobile_country_code=("#mobile_country_code").val();
-                var country_lat=("#country_lat").val();
-                var country_long=("#country_long").val();
-                var id = $("#dataid").val();
-                if(country_name !='' && mobile_country_code != '' && country_lat !='' && country_long !=''){
-                $ajax({
-                    type:'update',
+            /****************************update country data************** */
+            function updateCountry(){
+                var country=$("#country").val();
+                var mobile_code=$("#mobile_code").val();
+                var country_lat=$("#country_lat").val();
+                var country_long=$("#country_long").val();
+                var id=$('#dataid').val();
+                if(country !='' && mobile_code != '' && country_lat !='' && country_long !=''){
+                $.ajax({
                     url:'./backend/countryUpdate.php',
                     method:'POST',
                     data:{
-                       country_name:country_name,
-                       mobile_country_code:mobile_country_code,
-                       country_lat:country_lat,
-                       country_long:country_long
+                        country:country,
+                        mobile_code:mobile_code,
+                        country_lat:country_lat,
+                        country_long:country_long,
+                        id:id
                     },
-                    success:function(data){
-                        alert("Country Updated")
-                    }
+                   success:function(data){
+                  alert("Country Details updated");
+                window.location.href="./add_country.php";
+                   }
                 });
+            }else{
+                alert("Insert all details");
             }
-            else{
-                alert("Insert all details")
             }
-        });
-    });
+
+           
     </script>
 
     <!-- ============================================================== -->
